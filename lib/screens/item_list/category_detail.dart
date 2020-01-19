@@ -1,8 +1,9 @@
 import 'dart:async';
 
+import 'package:aesop_demo/screens/item_list/widgets/animatedItem.dart';
 import 'package:flutter/material.dart';
-import 'package:aesop_demo/screens/item_detail.dart';
-import './animatedItem.dart';
+import 'item_detail/index.dart';
+
 
 class CategoryDetail extends StatefulWidget {
   @override

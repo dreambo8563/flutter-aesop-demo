@@ -1,5 +1,5 @@
+import 'package:aesop_demo/screens/item_list/category_detail.dart';
 import 'package:flutter/material.dart';
-import 'package:aesop_demo/screens/category_detail.dart';
 
 final List<int> categories = <int>[1, 2, 3, 4, 5, 6, 7, 8, 9];
 final List<int> items = <int>[1, 2, 3, 4, 5, 6, 7, 8, 9];
