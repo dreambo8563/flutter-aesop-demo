@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:aesop_demo/screens/item_detail/index.dart';
 import 'package:aesop_demo/screens/item_list/widgets/animatedItem.dart';
+import 'package:aesop_demo/widgets/header.dart';
+import 'package:aesop_demo/widgets/shop_appbar.dart';
+import 'package:aesop_demo/widgets/tabbar.dart';
 import 'package:flutter/material.dart';
-import 'item_detail/index.dart';
-
 
 class CategoryDetail extends StatefulWidget {
   @override
@@ -12,17 +14,16 @@ class CategoryDetail extends StatefulWidget {
 
 class _CategoryDetailState extends State<CategoryDetail>
     with TickerProviderStateMixin {
-  TabController controller;
   ScrollController scrollController;
-  double shadowWidth = 0;
+  bool scrolled = false;
   _scrollListener() {
     if (scrollController.offset <= scrollController.position.minScrollExtent) {
       setState(() {
-        shadowWidth = 0;
+        scrolled = false;
       });
     } else {
       setState(() {
-        shadowWidth = 0.2;
+        scrolled = true;
       });
     }
   }
@@ -31,7 +32,6 @@ class _CategoryDetailState extends State<CategoryDetail>
 
   @override
   void initState() {
-    controller = TabController(vsync: this, length: 3);
     scrollController = ScrollController();
     scrollController.addListener(_scrollListener);
     Timer.periodic(Duration(milliseconds: 300), (Timer t) {
@@ -50,7 +50,6 @@ class _CategoryDetailState extends State<CategoryDetail>
 
   @override
   void dispose() {
-    controller.dispose();
     scrollController.dispose();
     super.dispose();
   }
@@ -58,94 +57,48 @@ class _CategoryDetailState extends State<CategoryDetail>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        actionsIconTheme: IconThemeData(
-          color: Colors.black,
-        ),
-        backgroundColor: Color.fromRGBO(254, 253, 242, 1),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.shopping_cart),
-            onPressed: () {
-              print("shoping cart clicked");
-            },
-          ),
-        ],
-      ),
-      bottomNavigationBar: Material(
-        color: Color.fromRGBO(254, 253, 242, 1),
-        child: TabBar(
-          controller: controller,
-          tabs: <Widget>[
-            Tab(
-              icon: Icon(Icons.home),
-            ),
-            Tab(
-              icon: Icon(Icons.favorite),
-            ),
-            Tab(
-              icon: Icon(Icons.search),
-            )
-          ],
-        ),
-      ),
+      appBar: commonAppbar(actions: [
+        IconButton(
+          icon: Icon(Icons.shopping_cart),
+          onPressed: () {
+            print("shoping cart clicked");
+          },
+        )
+      ]),
+      bottomNavigationBar: ShopTabbar(),
       body: SafeArea(
         child: Flex(
           direction: Axis.vertical,
           children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                border: Border(
-                    bottom: BorderSide(
-                  color: Colors.black12.withOpacity(shadowWidth),
-                  width: 0.5,
-                )),
-              ),
-              child: Container(
-                color: Color.fromRGBO(254, 253, 242, 1),
-                height: 90,
-                width: double.infinity,
-                padding: EdgeInsets.only(left: 18),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "Eyes & Lips",
-                      style: TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.w600,
+            Header(
+              scrolled: scrolled,
+              title: "Eyes & Lips",
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: RichText(
+                  text: TextSpan(
+                    text: 'All Products ',
+                    style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black38),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: '·',
+                        style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: RichText(
-                        text: TextSpan(
-                          text: 'All Products ',
-                          style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.black38),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: '·',
-                              style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black),
-                            ),
-                            TextSpan(
-                              text: ' Eyes Lisp',
-                              style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.black),
-                            ),
-                          ],
-                        ),
+                      TextSpan(
+                        text: ' Eyes Lisp',
+                        style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

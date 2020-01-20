@@ -1,3 +1,4 @@
+import 'package:aesop_demo/widgets/tabbar.dart';
 import 'package:flutter/material.dart';
 
 class ItemDetail extends StatefulWidget {
@@ -19,13 +20,11 @@ class _ItemDetailState extends State<ItemDetail> with TickerProviderStateMixin {
 
   _ItemDetailState({this.index});
 
-  TabController controller;
-
   int selectSize = 1;
 
   @override
   void initState() {
-    controller = TabController(vsync: this, length: 3);
+  
     contentController = AnimationController(
         duration: Duration(milliseconds: transitionDuration), vsync: this)
       ..addListener(() => setState(() {}));
@@ -47,7 +46,7 @@ class _ItemDetailState extends State<ItemDetail> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    controller.dispose();
+   
     contentController.dispose();
     super.dispose();
   }
@@ -70,23 +69,7 @@ class _ItemDetailState extends State<ItemDetail> with TickerProviderStateMixin {
           ),
         ],
       ),
-      bottomNavigationBar: Material(
-        color: Color.fromRGBO(254, 253, 242, 1),
-        child: TabBar(
-          controller: controller,
-          tabs: <Widget>[
-            Tab(
-              icon: Icon(Icons.home),
-            ),
-            Tab(
-              icon: Icon(Icons.favorite),
-            ),
-            Tab(
-              icon: Icon(Icons.search),
-            )
-          ],
-        ),
-      ),
+      bottomNavigationBar:ShopTabbar(),
       body: SafeArea(
         child: Flex(
           direction: Axis.vertical,
