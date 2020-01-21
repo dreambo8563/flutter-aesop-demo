@@ -25,7 +25,7 @@ class _AnimatedItemState extends State<AnimatedItem>
   Animation<double> priceVal;
   Animation<double> picVal;
 
-  int transitionDuration = 1500;
+  int transitionDuration = 1000;
   double transitionDistance = 10.0;
 
   @override
@@ -40,7 +40,7 @@ class _AnimatedItemState extends State<AnimatedItem>
 
     _picOpacity = Tween(begin: 0.0, end: 1.0).animate(new CurvedAnimation(
         parent: _controller,
-        curve: Interval(0.0, 0.3, curve: Curves.easeInOut)));
+        curve: Interval(0.0, 0.2, curve: Curves.easeInOut)));
 
     transformVal = Tween(begin: transitionDistance, end: 0.0).animate(
         new CurvedAnimation(
@@ -48,7 +48,7 @@ class _AnimatedItemState extends State<AnimatedItem>
             curve: Interval(0.2, 0.66, curve: Curves.easeInOut)));
     _textOpacity = Tween(begin: 0.0, end: 1.0).animate(new CurvedAnimation(
         parent: _controller,
-        curve: Interval(0.2, 0.66, curve: Curves.easeInOut)));
+        curve: Interval(0.2, 0.4, curve: Curves.easeInOut)));
 
     priceVal = Tween(begin: transitionDistance, end: 0.0).animate(
         new CurvedAnimation(
@@ -57,7 +57,7 @@ class _AnimatedItemState extends State<AnimatedItem>
 
     _priceOpacity = Tween(begin: 0.0, end: 1.0).animate(new CurvedAnimation(
         parent: _controller,
-        curve: Interval(0.5, 1.0, curve: Curves.easeInOut)));
+        curve: Interval(0.4, 0.6, curve: Curves.easeInOut)));
 
     _controller.forward();
 
