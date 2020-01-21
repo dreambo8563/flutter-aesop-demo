@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:aesop_demo/screens/home/widgets/category.dart';
 import 'package:aesop_demo/widgets/header.dart';
 import 'package:aesop_demo/widgets/shop_appbar.dart';
 import 'package:aesop_demo/widgets/tabbar.dart';
 import 'package:flutter/material.dart';
 
-final List<int> categories = <int>[1, 2, 3, 4, 5, 6, 7, 8, 9];
+final List<int> categories = <int>[];
 final List<int> items = <int>[1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 class ShopTab extends StatefulWidget {
@@ -14,6 +16,7 @@ class ShopTab extends StatefulWidget {
 
 class _ShopTabState extends State<ShopTab> with SingleTickerProviderStateMixin {
   ScrollController scrollController;
+
 
   bool scrolled = false;
   _scrollListener() {
@@ -32,11 +35,25 @@ class _ShopTabState extends State<ShopTab> with SingleTickerProviderStateMixin {
     }
   }
 
+
+
   @override
   void initState() {
     scrollController = ScrollController();
     scrollController.addListener(_scrollListener);
+       Timer.periodic(Duration(milliseconds: 300), (Timer t) {
+      if (categories.length > 14) {
+        t.cancel();
+      } else {
+        if (this.mounted) {
+          setState(() {
+            categories.add(1);
+          });
+        }
+      }
+    });
     super.initState();
+
   }
 
   @override
