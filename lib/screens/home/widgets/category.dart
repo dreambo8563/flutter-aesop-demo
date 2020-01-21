@@ -9,23 +9,24 @@ class Category extends StatefulWidget {
 
   final Color color;
 
-
-   Category({Key key, this.title, this.desc, this.color, this.items=const []})
+  Category({Key key, this.title, this.desc, this.color, this.items = const []})
       : super(key: key);
 
   @override
   _CategoryState createState() => _CategoryState();
 }
 
-class _CategoryState extends State<Category>  with SingleTickerProviderStateMixin{
-    AnimationController _controller;
-
+class _CategoryState extends State<Category>
+    with SingleTickerProviderStateMixin {
+  final int duration = 700;
+  AnimationController _controller;
   Animation<Offset> _offsetAnimation;
+  Animation<double> _opacityAnimation;
 
   @override
   void initState() {
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 700),
+      duration: Duration(milliseconds: duration),
       vsync: this,
     );
     _offsetAnimation = Tween<Offset>(
@@ -35,19 +36,29 @@ class _CategoryState extends State<Category>  with SingleTickerProviderStateMixi
       parent: _controller,
       curve: Curves.easeInOutCirc,
     ));
+
+    _opacityAnimation = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOutCirc,
+    ));
     _controller.forward();
     super.initState();
   }
-@override
+
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return SlideTransition(
-             position: _offsetAnimation,
-          child: Container(
+      position: _offsetAnimation,
+      child: Container(
         height: 280,
         color: widget.color,
         child: Column(
@@ -82,7 +93,10 @@ class _CategoryState extends State<Category>  with SingleTickerProviderStateMixi
                   if (lastNode) {
                     return SeeAllButton();
                   }
-                  return ShopItem();
+                  return AnimatedOpacity(
+                      opacity: _opacityAnimation.value,
+                      duration: Duration(milliseconds: duration),
+                      child: ShopItem());
                 },
               ),
             )
