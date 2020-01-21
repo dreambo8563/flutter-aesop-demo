@@ -5,19 +5,16 @@ class AnimatedItem extends StatefulWidget {
   const AnimatedItem({this.index});
 
   @override
-  _AnimatedItemState createState() => _AnimatedItemState(index: index);
+  _AnimatedItemState createState() => _AnimatedItemState();
 }
 
 class _AnimatedItemState extends State<AnimatedItem>
     with TickerProviderStateMixin {
-  final int index;
-  _AnimatedItemState({this.index});
-  double _textOpacity = 0;
-  double _priceOpacity = 0;
-  double _picOpacity = 0;
-  double _itemOpacity = 0;
+  Animation<double> _textOpacity;
+  Animation<double> _priceOpacity;
+  Animation<double> _picOpacity;
+  double _itemOpacity = 1;
 
-  AnimationController itemShowController;
   AnimationController tranformController;
   AnimationController priceController;
   AnimationController picController;
@@ -27,60 +24,51 @@ class _AnimatedItemState extends State<AnimatedItem>
   Animation<double> picVal;
 
   int transitionDuration = 200;
-  double transitionDistance = 10;
+  double transitionDistance = 10.0;
 
   @override
   void initState() {
-    itemShowController = AnimationController(
-        duration: Duration(milliseconds: transitionDuration), vsync: this)
-      ..addListener(() => setState(() {}));
     tranformController = AnimationController(
-        duration: Duration(milliseconds: transitionDuration), vsync: this)
-      ..addListener(() => setState(() {}));
+        duration: Duration(milliseconds: transitionDuration), vsync: this);
+      // ..addListener(() => setState(() {}));
 
     priceController = AnimationController(
-        duration: Duration(milliseconds: transitionDuration), vsync: this)
-      ..addListener(() => setState(() {}));
+        duration: Duration(milliseconds: transitionDuration), vsync: this);
+      // ..addListener(() => setState(() {}));
+
     picController = AnimationController(
-        duration: Duration(milliseconds: transitionDuration), vsync: this)
-      ..addListener(() => setState(() {}));
+        duration: Duration(milliseconds: transitionDuration), vsync: this);
+      // ..addListener(() => setState(() {}));
 
     transformVal = Tween(begin: transitionDistance, end: 0.0).animate(
         new CurvedAnimation(
             parent: tranformController, curve: Curves.easeInOut));
+    _textOpacity = Tween(begin: 0.0, end: 1.0).animate(new CurvedAnimation(
+        parent: tranformController, curve: Curves.easeInOut));
 
     priceVal = Tween(begin: transitionDistance, end: 0.0).animate(
         new CurvedAnimation(parent: priceController, curve: Curves.easeInOut));
+
+    _priceOpacity = Tween(begin: 0.0, end: 1.0).animate(
+        new CurvedAnimation(parent: priceController, curve: Curves.easeInOut));
+
     picVal = Tween(begin: transitionDistance, end: 0.0).animate(
         new CurvedAnimation(parent: picController, curve: Curves.easeInOut));
 
-    if (this.mounted) {
-      itemShowController.forward();
-      setState(() {
-        _itemOpacity = 1;
-      });
-    }
+    _picOpacity = Tween(begin: 0.0, end: 1.0).animate(
+        new CurvedAnimation(parent: picController, curve: Curves.easeInOut));
+
     Future.delayed(const Duration(milliseconds: 100), () async {
       if (this.mounted) {
         picController.forward();
-
-        setState(() {
-          _picOpacity = 1;
-        });
       }
       Future.delayed(const Duration(milliseconds: 400), () {
         if (this.mounted) {
           tranformController.forward();
-          setState(() {
-            _textOpacity = 1;
-          });
         }
-        Future.delayed(const Duration(milliseconds: 400), () {
+        Future.delayed(const Duration(milliseconds: 500), () {
           if (this.mounted) {
             priceController.forward();
-            setState(() {
-              _priceOpacity = 1;
-            });
           }
         });
       });
@@ -91,16 +79,10 @@ class _AnimatedItemState extends State<AnimatedItem>
 
   @override
   void dispose() {
-    // itemShowController.stop();
-    itemShowController.dispose();
-
-    // tranformController.stop();
     tranformController.dispose();
 
-    // picController.stop();
     picController.dispose();
 
-    // priceController.stop();
     priceController.dispose();
     super.dispose();
   }
@@ -117,10 +99,10 @@ class _AnimatedItemState extends State<AnimatedItem>
             offset:
                 Offset(0, picVal != null ? picVal.value : transitionDistance),
             child: Hero(
-              tag: 'shop$index',
+              tag: 'shop${widget.index}',
               child: AnimatedOpacity(
                 duration: Duration(milliseconds: transitionDuration),
-                opacity: _picOpacity,
+                opacity: _picOpacity.value,
                 child: Image.asset('assets/images/a.png', fit: BoxFit.contain),
               ),
             ),
@@ -135,7 +117,7 @@ class _AnimatedItemState extends State<AnimatedItem>
                       : transitionDistance),
               child: AnimatedOpacity(
                 duration: Duration(milliseconds: transitionDuration),
-                opacity: _textOpacity,
+                opacity: _textOpacity.value,
                 child: Text(
                   "Parsley Seed",
                   style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
@@ -148,7 +130,7 @@ class _AnimatedItemState extends State<AnimatedItem>
                 transformVal != null ? transformVal.value : transitionDistance),
             child: AnimatedOpacity(
               duration: Duration(milliseconds: transitionDuration),
-              opacity: _textOpacity,
+              opacity: _textOpacity.value,
               child: Text(
                 "Eye Cream",
                 style: TextStyle(
@@ -163,7 +145,7 @@ class _AnimatedItemState extends State<AnimatedItem>
                 0, priceVal != null ? priceVal.value : transitionDistance),
             child: AnimatedOpacity(
               duration: Duration(milliseconds: transitionDuration),
-              opacity: _priceOpacity,
+              opacity: _priceOpacity.value,
               child: Padding(
                 padding: EdgeInsets.only(top: 4.0),
                 child: Text(
