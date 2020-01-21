@@ -19,71 +19,54 @@ class _AnimatedItemState extends State<AnimatedItem>
   AnimationController priceController;
   AnimationController picController;
 
+  AnimationController _controller;
+
   Animation<double> transformVal;
   Animation<double> priceVal;
   Animation<double> picVal;
 
-  int transitionDuration = 200;
+  int transitionDuration = 1500;
   double transitionDistance = 10.0;
 
   @override
   void initState() {
-    tranformController = AnimationController(
+    _controller = AnimationController(
         duration: Duration(milliseconds: transitionDuration), vsync: this);
-      // ..addListener(() => setState(() {}));
 
-    priceController = AnimationController(
-        duration: Duration(milliseconds: transitionDuration), vsync: this);
-      // ..addListener(() => setState(() {}));
+    picVal = Tween(begin: transitionDistance, end: 0.0).animate(
+        new CurvedAnimation(
+            parent: _controller,
+            curve: Interval(0.0, 0.3, curve: Curves.easeInOut)));
 
-    picController = AnimationController(
-        duration: Duration(milliseconds: transitionDuration), vsync: this);
-      // ..addListener(() => setState(() {}));
+    _picOpacity = Tween(begin: 0.0, end: 1.0).animate(new CurvedAnimation(
+        parent: _controller,
+        curve: Interval(0.0, 0.3, curve: Curves.easeInOut)));
 
     transformVal = Tween(begin: transitionDistance, end: 0.0).animate(
         new CurvedAnimation(
-            parent: tranformController, curve: Curves.easeInOut));
+            parent: _controller,
+            curve: Interval(0.2, 0.66, curve: Curves.easeInOut)));
     _textOpacity = Tween(begin: 0.0, end: 1.0).animate(new CurvedAnimation(
-        parent: tranformController, curve: Curves.easeInOut));
+        parent: _controller,
+        curve: Interval(0.2, 0.66, curve: Curves.easeInOut)));
 
     priceVal = Tween(begin: transitionDistance, end: 0.0).animate(
-        new CurvedAnimation(parent: priceController, curve: Curves.easeInOut));
+        new CurvedAnimation(
+            parent: _controller,
+            curve: Interval(0.5, 1.0, curve: Curves.easeInOut)));
 
-    _priceOpacity = Tween(begin: 0.0, end: 1.0).animate(
-        new CurvedAnimation(parent: priceController, curve: Curves.easeInOut));
+    _priceOpacity = Tween(begin: 0.0, end: 1.0).animate(new CurvedAnimation(
+        parent: _controller,
+        curve: Interval(0.5, 1.0, curve: Curves.easeInOut)));
 
-    picVal = Tween(begin: transitionDistance, end: 0.0).animate(
-        new CurvedAnimation(parent: picController, curve: Curves.easeInOut));
-
-    _picOpacity = Tween(begin: 0.0, end: 1.0).animate(
-        new CurvedAnimation(parent: picController, curve: Curves.easeInOut));
-
-    Future.delayed(const Duration(milliseconds: 100), () async {
-      if (this.mounted) {
-        picController.forward();
-      }
-      Future.delayed(const Duration(milliseconds: 400), () {
-        if (this.mounted) {
-          tranformController.forward();
-        }
-        Future.delayed(const Duration(milliseconds: 500), () {
-          if (this.mounted) {
-            priceController.forward();
-          }
-        });
-      });
-    });
+    _controller.forward();
 
     super.initState();
   }
 
   @override
   void dispose() {
-    tranformController.dispose();
-
-    picController.dispose();
-
-    priceController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
