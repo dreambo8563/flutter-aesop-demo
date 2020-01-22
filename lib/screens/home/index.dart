@@ -17,7 +17,6 @@ class ShopTab extends StatefulWidget {
 class _ShopTabState extends State<ShopTab> with SingleTickerProviderStateMixin {
   ScrollController scrollController;
 
-
   bool scrolled = false;
   _scrollListener() {
     if (scrollController.offset <= scrollController.position.minScrollExtent) {
@@ -27,21 +26,17 @@ class _ShopTabState extends State<ShopTab> with SingleTickerProviderStateMixin {
         });
       }
     } else {
-      if (!scrolled) {
-        setState(() {
-          scrolled = true;
-        });
-      }
+      setState(() {
+        scrolled = true;
+      });
     }
   }
-
-
 
   @override
   void initState() {
     scrollController = ScrollController();
     scrollController.addListener(_scrollListener);
-       Timer.periodic(Duration(milliseconds: 300), (Timer t) {
+    Timer.periodic(Duration(milliseconds: 300), (Timer t) {
       if (categories.length > 14) {
         t.cancel();
       } else {
@@ -53,7 +48,6 @@ class _ShopTabState extends State<ShopTab> with SingleTickerProviderStateMixin {
       }
     });
     super.initState();
-
   }
 
   @override
