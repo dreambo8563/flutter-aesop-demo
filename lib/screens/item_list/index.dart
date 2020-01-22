@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:aesop_demo/screens/item_detail/index.dart';
-import 'package:aesop_demo/screens/item_list/widgets/animatedItem.dart';
+import 'package:aesop_demo/screens/item_list/widgets/animated_item.dart';
 import 'package:aesop_demo/widgets/header.dart';
 import 'package:aesop_demo/widgets/shop_appbar.dart';
 import 'package:aesop_demo/widgets/tabbar.dart';
