@@ -1,4 +1,4 @@
-# aesop_demo
+# Aēsop
 
 A demo project inspired on Aēsop Concept App on dribbble.
 

@@ -29,21 +29,20 @@ class _CategoryState extends State<Category>
       duration: Duration(milliseconds: duration),
       vsync: this,
     );
+
+    final Animation curve = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOutCirc,
+    );
     _offsetAnimation = Tween<Offset>(
       begin: Offset(0.0, 1.5),
       end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOutCirc,
-    ));
+    ).animate(curve);
 
     _opacityAnimation = Tween<double>(
       begin: 0,
       end: 1,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOutCirc,
-    ));
+    ).animate(curve);
     _controller.forward();
     super.initState();
   }

@@ -10,10 +10,8 @@ class AnimatedItem extends StatefulWidget {
 
 class _AnimatedItemState extends State<AnimatedItem>
     with TickerProviderStateMixin {
-  Animation<double> _textOpacity;
-  Animation<double> _priceOpacity;
-  Animation<double> _picOpacity;
-  double _itemOpacity = 1;
+  
+
 
   AnimationController tranformController;
   AnimationController priceController;
@@ -24,7 +22,11 @@ class _AnimatedItemState extends State<AnimatedItem>
   Animation<double> transformVal;
   Animation<double> priceVal;
   Animation<double> picVal;
+  Animation<double> _textOpacity;
+  Animation<double> _priceOpacity;
+  Animation<double> _picOpacity;
 
+  double _itemOpacity = 1;
   int transitionDuration = 1000;
   double transitionDistance = 10.0;
 

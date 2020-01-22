@@ -86,7 +86,7 @@ class _ShopTabState extends State<ShopTab> with SingleTickerProviderStateMixin {
           direction: Axis.vertical,
           children: <Widget>[
             Header(
-              title: "Aesop.",
+              title: "Aēsop.",
               scrolled: scrolled,
               child: Padding(
                 padding: const EdgeInsets.only(top: 8.0),
