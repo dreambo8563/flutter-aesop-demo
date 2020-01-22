@@ -1,3 +1,6 @@
+import 'package:aesop_demo/screens/item_detail/widgets/animator.dart';
+import 'package:aesop_demo/widgets/header.dart';
+import 'package:aesop_demo/widgets/shop_appbar.dart';
 import 'package:aesop_demo/widgets/tabbar.dart';
 import 'package:flutter/material.dart';
 
@@ -6,61 +9,35 @@ class ItemDetail extends StatefulWidget {
   const ItemDetail({this.index});
 
   @override
-  _ItemDetailState createState() => _ItemDetailState(index: index);
+  _ItemDetailState createState() => _ItemDetailState();
 }
 
 class _ItemDetailState extends State<ItemDetail> with TickerProviderStateMixin {
-  final int index;
-  double _contentOpacity = 0;
-  int transitionDuration = 1500;
-  double transitionDistance = 10;
+  int cartDurations = 1000;
 
-  int cartDurations = 1200;
-
-  AnimationController contentController;
   AnimationController cartController;
-  Animation<double> transformVal;
-
   Animation<double> _scale;
-
-  _ItemDetailState({this.index});
+  
 
   int selectSize = 1;
   bool adding = false;
 
   @override
   void initState() {
-    contentController = AnimationController(
-        duration: Duration(milliseconds: transitionDuration), vsync: this)
-      ..addListener(() => setState(() {}));
-
     cartController = AnimationController(
         duration: Duration(milliseconds: cartDurations), vsync: this)
       ..addListener(() {
         setState(() {});
       });
 
-    transformVal = Tween(begin: transitionDistance, end: 0.0).animate(
-        new CurvedAnimation(
-            parent: contentController, curve: Curves.easeInOut));
-
     _scale = Tween(begin: 2.5, end: 0.0).animate(
-        new CurvedAnimation(parent: cartController, curve: Curves.linear));
+        new CurvedAnimation(parent: cartController, curve: Curves.slowMiddle));
 
-    Future.delayed(Duration(milliseconds: 600), () {
-      if (this.mounted) {
-        contentController.forward();
-        setState(() {
-          _contentOpacity = 1;
-        });
-      }
-    });
     super.initState();
   }
 
   @override
   void dispose() {
-    contentController.dispose();
     cartController.dispose();
     super.dispose();
   }
@@ -70,78 +47,47 @@ class _ItemDetailState extends State<ItemDetail> with TickerProviderStateMixin {
     return Stack(
       children: <Widget>[
         Scaffold(
-          appBar: AppBar(
-            elevation: 0,
-            actionsIconTheme: IconThemeData(
-              color: Colors.black,
-            ),
-            backgroundColor: Color.fromRGBO(254, 253, 242, 1),
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.shopping_cart),
-                onPressed: () {
-                  print("shoping cart clicked");
-                },
-              ),
-            ],
-          ),
+          appBar: commonAppbar(actions: [
+            IconButton(
+              icon: Icon(Icons.shopping_cart),
+              onPressed: () {
+                print("shoping cart clicked");
+              },
+            )
+          ]),
           bottomNavigationBar: ShopTabbar(),
           body: SafeArea(
             child: Flex(
               direction: Axis.vertical,
               children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
-                      color: Colors.black12.withOpacity(0),
-                      width: 0.5,
-                    )),
-                  ),
-                  child: Container(
-                    color: Color.fromRGBO(254, 253, 242, 1),
-                    height: 90,
-                    width: double.infinity,
-                    padding: EdgeInsets.only(left: 18),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "",
-                          style: TextStyle(
-                            fontSize: 40,
-                            fontWeight: FontWeight.w600,
+                Header(
+                  title: "",
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: RichText(
+                      text: TextSpan(
+                        text: 'Eyes & Lips ',
+                        style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black38),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: '·',
+                            style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: RichText(
-                            text: TextSpan(
-                              text: 'Eyes & Lips ',
-                              style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black38),
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: '·',
-                                  style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.black),
-                                ),
-                                TextSpan(
-                                  text: ' Hydrate',
-                                  style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black),
-                                ),
-                              ],
-                            ),
+                          TextSpan(
+                            text: ' Hydrate',
+                            style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -152,16 +98,8 @@ class _ItemDetailState extends State<ItemDetail> with TickerProviderStateMixin {
                       child: Row(
                         children: <Widget>[
                           Flexible(
-                            flex: 3,
-                            child: Transform.translate(
-                              offset: Offset(
-                                  0,
-                                  transformVal != null
-                                      ? transformVal.value
-                                      : transitionDistance),
-                              child: AnimatedOpacity(
-                                duration: Duration(milliseconds: 500),
-                                opacity: _contentOpacity,
+                              flex: 3,
+                              child: Animator(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
@@ -294,9 +232,7 @@ class _ItemDetailState extends State<ItemDetail> with TickerProviderStateMixin {
                                     )
                                   ],
                                 ),
-                              ),
-                            ),
-                          ),
+                              )),
                           Flexible(
                             flex: 2,
                             child: Container(),
@@ -308,28 +244,6 @@ class _ItemDetailState extends State<ItemDetail> with TickerProviderStateMixin {
             ),
           ),
         ),
-        // Positioned(
-        //   top: 0,
-        //   right: -MediaQuery.of(context).size.width / 5 * 3 / 3,
-        //   height: MediaQuery.of(context).size.height,
-        //   width: MediaQuery.of(context).size.width / 5 * 3,
-        //   child: Hero(
-        //     tag: 'shop$index',
-        //     child: Center(
-        //       child: AnimatedOpacity(
-        //         opacity: 1,
-        //         duration: Duration(seconds: 1),
-        //         child: Transform.scale(
-        //           scale: 2.5,
-        //           child: Image.asset(
-        //             'assets/images/a.png',
-        //             fit: BoxFit.cover,
-        //           ),
-        //         ),
-        //       ),
-        //     ),
-        //   ),
-        // ),
         AnimatedPositioned(
             duration: Duration(milliseconds: cartDurations),
             top: adding ? -MediaQuery.of(context).size.height / 2 + 60 : 0,
@@ -339,11 +253,11 @@ class _ItemDetailState extends State<ItemDetail> with TickerProviderStateMixin {
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width / 5 * 3,
             child: Hero(
-              tag: 'shop$index',
+              tag: 'shop${widget.index}',
               child: Center(
                 child: AnimatedOpacity(
+                  duration: Duration(milliseconds: cartDurations),
                   opacity: adding ? 0 : 1,
-                  duration: Duration(seconds: 5),
                   child: Transform.scale(
                     scale: _scale == null ? 2.5 : _scale.value,
                     child: Image.asset(
@@ -355,46 +269,6 @@ class _ItemDetailState extends State<ItemDetail> with TickerProviderStateMixin {
               ),
             ))
       ],
-    );
-  }
-}
-
-class LabeledRadio extends StatelessWidget {
-  const LabeledRadio({
-    this.label,
-    this.padding,
-    this.groupValue,
-    this.value,
-    this.onChanged,
-  });
-
-  final String label;
-  final EdgeInsets padding;
-  final bool groupValue;
-  final bool value;
-  final Function onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        if (value != groupValue) onChanged(value);
-      },
-      child: Padding(
-        padding: padding,
-        child: Row(
-          children: <Widget>[
-            Radio<bool>(
-              groupValue: groupValue,
-              value: value,
-              onChanged: (bool newValue) {
-                onChanged(newValue);
-              },
-            ),
-            Text(label),
-          ],
-        ),
-      ),
     );
   }
 }
