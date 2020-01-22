@@ -1,16 +1,30 @@
 # aesop_demo
 
-A new Flutter project.
+A demo project inspired on Aēsop Concept App on dribbble.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## Intro
 
-A few resources to get you started if this is your first Flutter project:
+reference:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- https://dribbble.com/shots/9176712-Product-Detail-Page-A-sop
+![](https://cdn.dribbble.com/users/2283181/screenshots/9176712/media/5618fd239294840149e10e55276d9403.gif)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- https://dribbble.com/shots/9166204-App-Concept-A-sop
+![](https://cdn.dribbble.com/users/2283181/screenshots/9166204/media/a805a900c15447c2a865373b27980445.gif)
+
+
+## structure
+
+|--main.dart //Main App
+|+--models //Data Modle
+|+--screens // pages
+|  |+--widgets // widgets just used in specific screen
+|+--theme   // global theme conf
+|+--widgets  // reusable widget 
+
+
+## TODO
+
+- provider practice
+- http encapsulation
