@@ -44,13 +44,16 @@ class _AnimatorState extends State<Animator> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Transform.translate(
+    return AnimatedBuilder(
+      animation: _controller,
+      builder:(context,child) => Transform.translate(
       offset: Offset(0, _transform != null ? _transform.value : distantce),
       child: AnimatedOpacity(
         duration: Duration(milliseconds: duration),
         opacity: _opacity != null ? _opacity.value : 0.0,
         child: widget.child,
       ),
+    ),
     );
   }
 }
