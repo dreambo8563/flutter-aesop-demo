@@ -11,7 +11,6 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("header build");
     return Container(
       decoration: BoxDecoration(
         border: Border(

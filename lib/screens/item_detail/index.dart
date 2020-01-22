@@ -245,6 +245,9 @@ class _ItemDetailState extends State<ItemDetail> with TickerProviderStateMixin {
           ),
         ),
         AnimatedPositioned(
+          onEnd: (){
+            Navigator.pop(context);
+          },
             duration: Duration(milliseconds: cartDurations),
             top: adding ? -MediaQuery.of(context).size.height / 2 + 60 : 0,
             right: adding
