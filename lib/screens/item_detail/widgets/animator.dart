@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 class Animator extends StatefulWidget {
   final Widget child;
 
-  const Animator({Key key, @required this.child}) : super(key: key);
+  final bool reverse;
+
+  const Animator({Key key, @required this.child, this.reverse})
+      : super(key: key);
 
   @override
   _AnimatorState createState() => _AnimatorState();
@@ -43,17 +46,27 @@ class _AnimatorState extends State<Animator> with TickerProviderStateMixin {
   }
 
   @override
+  void didUpdateWidget(Animator oldWidget) {
+    if (!oldWidget.reverse && widget.reverse) {
+      _controller.reverse().whenComplete(() {
+        Navigator.pop(context);
+      });
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _controller,
-      builder:(context,child) => Transform.translate(
-      offset: Offset(0, _transform != null ? _transform.value : distantce),
-      child: AnimatedOpacity(
-        duration: Duration(milliseconds: duration),
-        opacity: _opacity != null ? _opacity.value : 0.0,
-        child: widget.child,
+      builder: (context, child) => Transform.translate(
+        offset: Offset(0, _transform != null ? _transform.value : distantce),
+        child: AnimatedOpacity(
+          duration: Duration(milliseconds: duration),
+          opacity: _opacity != null ? _opacity.value : 0.0,
+          child: widget.child,
+        ),
       ),
-    ),
     );
   }
 }

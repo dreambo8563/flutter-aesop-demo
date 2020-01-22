@@ -17,6 +17,8 @@ class _ItemDetailState extends State<ItemDetail> with TickerProviderStateMixin {
 
   AnimationController cartController;
   Animation<double> _scale;
+
+  bool reverse = false;
   
 
   int selectSize = 1;
@@ -100,6 +102,7 @@ class _ItemDetailState extends State<ItemDetail> with TickerProviderStateMixin {
                           Flexible(
                               flex: 3,
                               child: Animator(
+                                reverse: reverse,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
@@ -246,7 +249,10 @@ class _ItemDetailState extends State<ItemDetail> with TickerProviderStateMixin {
         ),
         AnimatedPositioned(
           onEnd: (){
-            Navigator.pop(context);
+            setState(() {
+              reverse=true;
+            });
+
           },
             duration: Duration(milliseconds: cartDurations),
             top: adding ? -MediaQuery.of(context).size.height / 2 + 60 : 0,
