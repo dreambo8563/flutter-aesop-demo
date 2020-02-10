@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:aesop_demo/screens/home/widgets/category.dart';
+import 'package:aesop_demo/utils/http.dart';
 import 'package:aesop_demo/widgets/header.dart';
 import 'package:aesop_demo/widgets/shop_appbar.dart';
 import 'package:aesop_demo/widgets/tabbar.dart';
@@ -48,6 +49,7 @@ class _ShopTabState extends State<ShopTab> with SingleTickerProviderStateMixin {
       }
     });
     super.initState();
+    getHttp();
   }
 
   @override
