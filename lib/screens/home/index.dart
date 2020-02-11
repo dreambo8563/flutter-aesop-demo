@@ -49,7 +49,7 @@ class _ShopTabState extends State<ShopTab> with SingleTickerProviderStateMixin {
       }
     });
     super.initState();
-    getHttp();
+    getMock();
   }
 
   @override
